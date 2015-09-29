@@ -34,7 +34,7 @@ public class Database {
 	}
 	
 	private void connect() throws SQLException{
-		conn = DriverManager.getConnection("localhost", "root", "password");
+		conn = DriverManager.getConnection("jdbc:mysql://localhost", "root", "password");
 		Statement stmt = conn.createStatement();
 		String query = "USE " + dbName;
 		stmt.execute(query);
