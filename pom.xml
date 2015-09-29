@@ -4,6 +4,7 @@
   <artifactId>SpinalcraftManager-Server</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <build>
+  	<finalName>SpinalcraftManager-Server</finalName>
     <sourceDirectory>src</sourceDirectory>
     <plugins>
       <plugin>
