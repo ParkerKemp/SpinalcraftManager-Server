@@ -31,6 +31,7 @@ public class Database {
 		this.dbName = dbName;
 		try {
 			connect();
+			createTables();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -55,4 +56,27 @@ public class Database {
 		String query = "USE " + dbName;
 		stmt.execute(query);
 	}
+	
+	private void createTables() throws SQLException{
+		String query = "CREATE TABLE IF NOT EXISTS manager_actors ("
+				+ "id INT PRIMARY KEY AUTO_INCREMENT, "
+				+ "name VARCHAR(32) NOT NULL, "
+				+ "publicKey TINYTEXT, "
+				+ "secretKey VARCHAR(32) UNIQUE)";
+		
+		Statement stmt = conn.createStatement();
+		stmt.execute(query);
+		
+		query = "CREATE TABLE IF NOT EXISTS manager_accessKeys ("
+				+ "actor_id INT PRIMARY KEY, "
+				+ "accessKey VARCHAR(32) NOT NULL UNIQUE, "
+				+ "claimed TINYINT NOT NULL DEFAULT 0)";
+		
+		stmt = conn.createStatement();
+		stmt.execute(query);
+	}
 }
+
+
+
+
