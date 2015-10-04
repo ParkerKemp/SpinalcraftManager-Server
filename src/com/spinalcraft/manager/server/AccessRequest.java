@@ -29,7 +29,9 @@ public class AccessRequest {
 			grantAccess();	
 		}
 		else{
-			printer.println("ACCESS DENIED");
+			MessageSender sender  = new MessageSender(printer);
+			sender.add("status", "BAD");
+			sender.sendMessage();
 		}
 	}
 	
