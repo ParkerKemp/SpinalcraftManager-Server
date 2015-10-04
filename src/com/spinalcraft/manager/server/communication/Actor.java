@@ -18,7 +18,7 @@ public class Actor {
 
 	public static Actor getFromUnclaimedAccessKey(String key) throws SQLException{
 		String query = "SELECT * FROM manager_accessKeys k JOIN manager_actors a ON k.actor_id = a.id "
-				+ "WHERE k.accessKey = ?";
+				+ "WHERE BINARY k.accessKey = ?";
 		
 		PreparedStatement stmt = Database.getInstance().prepareStatement(query);
 		
@@ -88,8 +88,8 @@ public class Actor {
 	
 	private void updateWithClaimedAccessKey() throws SQLException{
 		String query = "UPDATE manager_accessKeys "
-				+ "SET claimed = 1"
-				+ "WHERE actor_id = ?";
+				+ "SET claimed = 1 "
+				+ "WHERE actor_id = ? ";
 		PreparedStatement stmt = Database.getInstance().prepareStatement(query);
 		stmt.setInt(1, id);
 		stmt.execute();
