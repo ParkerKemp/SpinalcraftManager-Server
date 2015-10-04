@@ -1,4 +1,4 @@
-package com.spinalcraft.manager.server;
+package com.spinalcraft.manager.server.communication;
 
 import java.io.IOException;
 import java.net.ServerSocket;

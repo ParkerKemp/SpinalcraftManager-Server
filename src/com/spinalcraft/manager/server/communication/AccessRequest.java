@@ -1,4 +1,4 @@
-package com.spinalcraft.manager.server;
+package com.spinalcraft.manager.server.communication;
 
 import java.io.PrintStream;
 import java.security.GeneralSecurityException;
@@ -8,7 +8,6 @@ import javax.crypto.SecretKey;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
-import com.google.gson.JsonObject;
 import com.spinalcraft.easycrypt.messenger.MessageReceiver;
 import com.spinalcraft.easycrypt.messenger.MessageSender;
 

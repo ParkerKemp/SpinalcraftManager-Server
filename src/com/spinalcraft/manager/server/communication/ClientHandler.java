@@ -1,4 +1,4 @@
-package com.spinalcraft.manager.server;
+package com.spinalcraft.manager.server.communication;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,12 +21,9 @@ public class ClientHandler implements Runnable{
 		try {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 			printer = new PrintStream(conn.getOutputStream());
-			
-//			String request = reader.readLine();
 			MessageReceiver receiver = new MessageReceiver(reader);
 			receiver.receiveMessage();
 			processRequest(receiver);
-//			System.out.println(request);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
