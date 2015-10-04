@@ -2,10 +2,13 @@ package com.spinalcraft.manager.server;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import com.spinalcraft.manager.server.communication.Actor;
 
 public class Database {
 	private String dbName;
@@ -50,6 +53,31 @@ public class Database {
 		return authors;
 	}
 	
+	public ArrayList<String> getUnclaimedAccessKeys(){
+		ArrayList<String> keys = new ArrayList<String>();
+		String query = "SELECT * FROM manager_accessKeys WHERE claimed = 0";
+		try {
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			keys.add(rs.getString("accessKey"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return keys;
+	}
+	
+	public void updateApprovedActor(Actor actor) throws SQLException{
+		String query = "UPDATE manager_actors "
+				+ "SET publicKey = ?,"
+				+ "secretKey = ?"
+				+ "WHERE id = ?";
+		PreparedStatement stmt = conn.prepareStatement(query);
+		stmt.setString(1, actor.getPublicKeyAsString());
+		stmt.setString(2, actor.getSecretKeyAsString());
+		stmt.setInt(3, actor.id);
+		stmt.execute();
+	}
+	
 	private void connect() throws SQLException{
 		conn = DriverManager.getConnection("jdbc:mysql://localhost", "root", "password");
 		Statement stmt = conn.createStatement();
@@ -70,7 +98,8 @@ public class Database {
 		query = "CREATE TABLE IF NOT EXISTS manager_accessKeys ("
 				+ "actor_id INT PRIMARY KEY, "
 				+ "accessKey VARCHAR(32) NOT NULL UNIQUE, "
-				+ "claimed TINYINT NOT NULL DEFAULT 0)";
+				+ "claimed TINYINT NOT NULL DEFAULT 0, "
+				+ "FOREIGN KEY (actor_id) REFERENCES manager_actors(id))";
 		
 		stmt = conn.createStatement();
 		stmt.execute(query);
