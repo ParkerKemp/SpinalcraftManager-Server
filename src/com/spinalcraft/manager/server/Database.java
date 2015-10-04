@@ -10,8 +10,24 @@ import java.util.ArrayList;
 public class Database {
 	private String dbName;
 	private Connection conn;
+	private static Database instance;
 	
-	public Database(String dbName){
+	private Database(){
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static Database getInstance(){
+		if(instance == null){
+			instance = new Database();
+		}
+		return instance;
+	}
+	
+	public void init(String dbName){
 		this.dbName = dbName;
 		try {
 			connect();
@@ -34,7 +50,7 @@ public class Database {
 	}
 	
 	private void connect() throws SQLException{
-		conn = DriverManager.getConnection("localhost", "root", "password");
+		conn = DriverManager.getConnection("jdbc:mysql://localhost", "root", "password");
 		Statement stmt = conn.createStatement();
 		String query = "USE " + dbName;
 		stmt.execute(query);
