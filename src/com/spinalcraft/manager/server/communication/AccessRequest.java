@@ -18,7 +18,7 @@ public class AccessRequest {
 	}
 	
 	public void process(){
-		String accessKey = receiver.get("accessKey");
+		String accessKey = receiver.getItem("accessKey");
 		try {
 			Actor actor = Actor.getFromUnclaimedAccessKey(accessKey);
 			if(actor != null)
@@ -32,7 +32,7 @@ public class AccessRequest {
 	
 	private void grantAccess(Actor actor){
 		try {
-			String publicKeyString = receiver.get("publicKey");
+			String publicKeyString = receiver.getHeader("publicKey");
 			actor.publicKey = Crypt.getInstance().loadPublicKey(publicKeyString);
 			actor.secretKey = Crypt.getInstance().generateSecretKey();
 			actor.updateWithApproval();
@@ -41,8 +41,8 @@ public class AccessRequest {
 			byte[] cipher = Crypt.getInstance().encryptKey(actor.publicKey, actor.secretKey);
 			
 			MessageSender sender = new MessageSender(printer);
-			sender.add("status", "GOOD");
-			sender.add("secret", Crypt.getInstance().encode(cipher));
+			sender.addHeader("status", "GOOD");
+			sender.addItem("secret", Crypt.getInstance().encode(cipher));
 			sender.sendMessage();
 			
 		} catch (GeneralSecurityException | SQLException e) {
@@ -52,7 +52,7 @@ public class AccessRequest {
 	
 	private void denyAccess(){
 		MessageSender sender  = new MessageSender(printer);
-		sender.add("status", "BAD");
+		sender.addHeader("status", "BAD");
 		sender.sendMessage();
 	}
 }
