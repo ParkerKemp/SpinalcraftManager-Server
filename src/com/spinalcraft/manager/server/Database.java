@@ -8,8 +8,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import com.spinalcraft.manager.server.communication.Actor;
-
 public class Database {
 	private String dbName;
 	private Connection conn;
@@ -40,6 +38,10 @@ public class Database {
 		}
 	}
 	
+	public PreparedStatement prepareStatement(String query) throws SQLException{
+		return conn.prepareStatement(query);
+	}
+	
 	public ArrayList<String> getRecords(){
 		ArrayList<String> authors = new ArrayList<String>();
 		String query = "SELECT * FROM Applications WHERE unread = 1 AND discarded = 0";
@@ -53,29 +55,15 @@ public class Database {
 		return authors;
 	}
 	
-	public ArrayList<String> getUnclaimedAccessKeys(){
+	public ArrayList<String> getUnclaimedAccessKeys() throws SQLException{
 		ArrayList<String> keys = new ArrayList<String>();
 		String query = "SELECT * FROM manager_accessKeys WHERE claimed = 0";
-		try {
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
-			keys.add(rs.getString("accessKey"));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+
+		Statement stmt = conn.createStatement();
+		ResultSet rs = stmt.executeQuery(query);
+		keys.add(rs.getString("accessKey"));
+
 		return keys;
-	}
-	
-	public void updateApprovedActor(Actor actor) throws SQLException{
-		String query = "UPDATE manager_actors "
-				+ "SET publicKey = ?,"
-				+ "secretKey = ?"
-				+ "WHERE id = ?";
-		PreparedStatement stmt = conn.prepareStatement(query);
-		stmt.setString(1, actor.getPublicKeyAsString());
-		stmt.setString(2, actor.getSecretKeyAsString());
-		stmt.setInt(3, actor.id);
-		stmt.execute();
 	}
 	
 	private void connect() throws SQLException{

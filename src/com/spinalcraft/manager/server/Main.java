@@ -5,11 +5,18 @@ import com.spinalcraft.manager.server.communication.Listener;
 
 public class Main {
 	public final static String dbName = "Development";
+	private final static boolean shouldShowDebug = true;
 
 	public static void main(String[] args){
-		Messenger.shouldShowDebug = true;
+		Messenger.shouldShowDebug = shouldShowDebug;
 		Database.getInstance().init(dbName);
 		(new Thread(new Listener())).start();
 		System.out.println("Waiting...");
+	}
+	
+	public static void debug(String string){
+		if(shouldShowDebug){
+			System.out.println(string);
+		}
 	}
 }

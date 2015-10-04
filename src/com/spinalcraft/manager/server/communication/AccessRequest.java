@@ -2,61 +2,57 @@ package com.spinalcraft.manager.server.communication;
 
 import java.io.PrintStream;
 import java.security.GeneralSecurityException;
-import java.security.PublicKey;
-
-import javax.crypto.SecretKey;
-
-import org.apache.commons.lang3.StringEscapeUtils;
+import java.sql.SQLException;
 
 import com.spinalcraft.easycrypt.messenger.MessageReceiver;
 import com.spinalcraft.easycrypt.messenger.MessageSender;
+import com.spinalcraft.manager.server.Main;
 
 public class AccessRequest {
-	private Crypt crypt;
 	private MessageReceiver receiver;
 	private PrintStream printer;
 	
 	public AccessRequest(MessageReceiver receiver, PrintStream printer){
 		this.receiver = receiver;
 		this.printer = printer;
-		crypt = new Crypt();
 	}
 	
 	public void process(){
 		String accessKey = receiver.get("accessKey");
-		if(accessKey.equals("derp")){
-			grantAccess();	
-		}
-		else{
-			MessageSender sender  = new MessageSender(printer);
-			sender.add("status", "BAD");
-			sender.sendMessage();
+		try {
+			Actor actor = Actor.getFromUnclaimedAccessKey(accessKey);
+			if(actor != null)
+				grantAccess(actor);
+			else
+				denyAccess();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 	
-	private void grantAccess(){
+	private void grantAccess(Actor actor){
 		try {
-			String publicKeyString = StringEscapeUtils.unescapeJava(receiver.get("publicKey"));
-			System.out.println(publicKeyString);
-			PublicKey publicKey = crypt.loadPublicKey(publicKeyString);
-			SecretKey secretKey = crypt.generateSecretKey();
-			System.out.println("Generated key: " + crypt.encode(secretKey.getEncoded()));
-			byte[] cipher = crypt.encryptKey(publicKey, secretKey);
-			System.out.println("Key cipher: " + crypt.encode(cipher));
+			String publicKeyString = receiver.get("publicKey");
+			actor.publicKey = Crypt.getInstance().loadPublicKey(publicKeyString);
+			actor.secretKey = Crypt.getInstance().generateSecretKey();
+			actor.updateWithApproval();
+			
+			Main.debug("Granting access for actor: " + actor.name);
+			byte[] cipher = Crypt.getInstance().encryptKey(actor.publicKey, actor.secretKey);
 			
 			MessageSender sender = new MessageSender(printer);
 			sender.add("status", "GOOD");
-			sender.add("secret", crypt.encode(cipher));
+			sender.add("secret", Crypt.getInstance().encode(cipher));
 			sender.sendMessage();
-//			JsonObject obj = new JsonObject();
-//			obj.addProperty("status", "GOOD");
-//			obj.addProperty("secret", crypt.encode(cipher));
-//			
-//			printer.println(obj.toString();
 			
-			
-		} catch (GeneralSecurityException e) {
+		} catch (GeneralSecurityException | SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void denyAccess(){
+		MessageSender sender  = new MessageSender(printer);
+		sender.add("status", "BAD");
+		sender.sendMessage();
 	}
 }
