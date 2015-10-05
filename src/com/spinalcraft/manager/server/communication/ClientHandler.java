@@ -30,7 +30,7 @@ public class ClientHandler implements Runnable{
 	}
 	
 	private void processRequest(MessageReceiver receiver){
-		String intent = receiver.get("intent");
+		String intent = receiver.getHeader("intent");
 		switch(intent){
 		case "access":
 			(new AccessRequest(receiver, printer)).process();
