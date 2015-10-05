@@ -42,6 +42,7 @@ public class Actor {
 		stmt.setString(1, publicKey);
 		ResultSet rs = stmt.executeQuery();
 		if(!rs.first()){
+			System.out.println("Failed to find actor: " + publicKey);
 			return null;
 		}
 		Actor actor = new Actor();
