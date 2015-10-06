@@ -15,6 +15,7 @@ public class Actor {
 	public String name;
 	public PublicKey publicKey;
 	public SecretKey secretKey;
+	public int lastTransmit;
 
 	public static Actor getFromUnclaimedAccessKey(String key) throws SQLException{
 		String query = "SELECT * FROM manager_accessKeys k JOIN manager_actors a ON k.actor_id = a.id "
@@ -56,6 +57,7 @@ public class Actor {
 			return null;
 		}
 		actor.secretKey = Crypt.getInstance().loadSecretKey(rs.getString("secretKey"));
+		actor.lastTransmit = rs.getInt("lastTransmit");
 		
 		return actor;
 	}

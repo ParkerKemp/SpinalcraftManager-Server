@@ -78,7 +78,8 @@ public class Database {
 				+ "id INT PRIMARY KEY AUTO_INCREMENT, "
 				+ "name VARCHAR(32) NOT NULL, "
 				+ "publicKey TINYTEXT, "
-				+ "secretKey VARCHAR(32) UNIQUE)";
+				+ "secretKey VARCHAR(32) UNIQUE, "
+				+ "lastTransmit INT)";
 		
 		Statement stmt = conn.createStatement();
 		stmt.execute(query);

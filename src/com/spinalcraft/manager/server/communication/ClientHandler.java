@@ -1,18 +1,16 @@
 package com.spinalcraft.manager.server.communication;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.net.Socket;
 import java.sql.SQLException;
 
 import com.spinalcraft.easycrypt.messenger.MessageReceiver;
 import com.spinalcraft.easycrypt.messenger.MessageSender;
+import com.spinalcraft.manager.server.communication.messenger.Receiver;
+import com.spinalcraft.manager.server.communication.messenger.Sender;
 
 public class ClientHandler implements Runnable{
 	private Socket conn;
-	private PrintStream printer;
 	
 	public ClientHandler(Socket conn){
 		this.conn = conn;
@@ -20,22 +18,16 @@ public class ClientHandler implements Runnable{
 	
 	@Override
 	public void run(){
-		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-			printer = new PrintStream(conn.getOutputStream());
-			MessageReceiver receiver = new MessageReceiver(reader);
-			receiver.receiveMessage();
+		MessageReceiver receiver = new Receiver(conn, Crypt.getInstance());
+		if(receiver.receiveMessage())
 			processRequest(receiver);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	private void processRequest(MessageReceiver receiver){
 		String intent = receiver.getHeader("intent");
 		switch(intent){
 		case "access":
-			(new AccessRequest(receiver, printer)).process();
+			(new AccessRequest(receiver, conn)).process();
 			break;
 		case "message":
 			String publicKey = receiver.getHeader("publicKey");
@@ -43,15 +35,12 @@ public class ClientHandler implements Runnable{
 			Actor actor;
 			try {
 				actor = Actor.getFromPublicKey(publicKey);
-				if(receiver.needsSecretKey()){
-					receiver.decrypt(actor.secretKey, Crypt.getInstance());
-				}
 				String message = receiver.getItem("message");
 				System.out.println("Received Message: " + message);
-				MessageSender sender = new MessageSender(printer);
+				MessageSender sender = new Sender(conn, Crypt.getInstance());
 				sender.addItem("message", message + " to you as well");
-				sender.sendEncrypted(actor.secretKey, Crypt.getInstance());
-			} catch (SQLException e) {
+				sender.sendEncrypted(actor.secretKey);
+			} catch (SQLException | IOException e) {
 				e.printStackTrace();
 			}
 			break;

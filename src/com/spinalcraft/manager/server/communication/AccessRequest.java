@@ -1,20 +1,20 @@
 package com.spinalcraft.manager.server.communication;
 
-import java.io.PrintStream;
+import java.net.Socket;
 import java.security.GeneralSecurityException;
 import java.sql.SQLException;
 
 import com.spinalcraft.easycrypt.messenger.MessageReceiver;
-import com.spinalcraft.easycrypt.messenger.MessageSender;
 import com.spinalcraft.manager.server.Main;
+import com.spinalcraft.manager.server.communication.messenger.Sender;
 
 public class AccessRequest {
 	private MessageReceiver receiver;
-	private PrintStream printer;
+	private Socket socket;
 	
-	public AccessRequest(MessageReceiver receiver, PrintStream printer){
+	public AccessRequest(MessageReceiver receiver, Socket socket){
 		this.receiver = receiver;
-		this.printer = printer;
+		this.socket = socket;
 	}
 	
 	public void process(){
@@ -40,7 +40,7 @@ public class AccessRequest {
 			Main.debug("Granting access for actor: " + actor.name);
 			byte[] cipher = Crypt.getInstance().encryptKey(actor.publicKey, actor.secretKey);
 			
-			MessageSender sender = new MessageSender(printer);
+			Sender sender = new Sender(socket, Crypt.getInstance());
 			sender.addHeader("status", "GOOD");
 			sender.addItem("secret", Crypt.getInstance().encode(cipher));
 			sender.sendMessage();
@@ -51,7 +51,7 @@ public class AccessRequest {
 	}
 	
 	private void denyAccess(){
-		MessageSender sender  = new MessageSender(printer);
+		Sender sender  = new Sender(socket, Crypt.getInstance());
 		sender.addHeader("status", "BAD");
 		sender.sendMessage();
 	}
