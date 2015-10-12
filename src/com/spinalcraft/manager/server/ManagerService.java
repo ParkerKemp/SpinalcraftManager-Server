@@ -14,13 +14,9 @@ import com.spinalcraft.manager.server.communication.messenger.Sender;
 
 public class ManagerService extends BerberosService{
 
-	public ManagerService(String identity, String accessKey, EasyCrypt crypt) {
-		super(identity, accessKey, crypt);
-	}
-
 	@Override
 	protected boolean authenticatorCached(String authenticator) {
-		String query = "SELECT * FROM manager_authenticators WHERE authenticator = ?";
+		String query = "SELECT * FROM authenticators WHERE authenticator = ?";
 		PreparedStatement stmt;
 		try {
 			stmt = Database.getInstance().prepareStatement(query);
@@ -36,7 +32,7 @@ public class ManagerService extends BerberosService{
 
 	@Override
 	protected boolean cacheAuthenticator(String authenticator) {
-		String query = "INSERT INTO manager_authenticators (authenticator) VALUES (?)";
+		String query = "INSERT INTO authenticators (authenticator) VALUES (?)";
 		try {
 			PreparedStatement stmt = Database.getInstance().prepareStatement(query);
 			stmt.setString(1, authenticator);
@@ -49,7 +45,7 @@ public class ManagerService extends BerberosService{
 
 	@Override
 	protected void storeSecretKey(String secretKey) {
-		String query = "INSERT INTO manager_masterKey (secretKey) VALUES (?)";
+		String query = "INSERT INTO masterKey (secretKey) VALUES (?)";
 		try {
 			PreparedStatement stmt = Database.getInstance().prepareStatement(query);
 			stmt.setString(1, secretKey);
@@ -61,7 +57,7 @@ public class ManagerService extends BerberosService{
 
 	@Override
 	protected String retrieveSecretKey() {
-		String query = "SELECT secretKey FROM manager_masterKey LIMIT 1";
+		String query = "SELECT secretKey FROM masterKey LIMIT 1";
 		try {
 			PreparedStatement stmt = Database.getInstance().prepareStatement(query);
 			ResultSet rs = stmt.executeQuery();

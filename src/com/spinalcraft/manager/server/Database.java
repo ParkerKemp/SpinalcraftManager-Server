@@ -68,13 +68,18 @@ public class Database {
 	
 	private void connect() throws SQLException{
 		conn = DriverManager.getConnection("jdbc:mysql://localhost", "root", "password");
+		
 		Statement stmt = conn.createStatement();
-		String query = "USE " + dbName;
+		String query = "CREATE DATABASE IF NOT EXISTS " + dbName;
+		stmt.execute(query);
+		
+		stmt = conn.createStatement();
+		query = "USE " + dbName;
 		stmt.execute(query);
 	}
 	
 	private void createTables() throws SQLException{
-		String query = "CREATE TABLE IF NOT EXISTS manager_actors ("
+		String query = "CREATE TABLE IF NOT EXISTS actors ("
 				+ "id INT PRIMARY KEY AUTO_INCREMENT, "
 				+ "name VARCHAR(32) NOT NULL, "
 				+ "publicKey TINYTEXT, "
@@ -84,12 +89,12 @@ public class Database {
 		Statement stmt = conn.createStatement();
 		stmt.execute(query);
 		
-		query = "CREATE TABLE IF NOT EXISTS manager_authenticators (id INT PRIMARY KEY AUTO_INCREMENT, "
+		query = "CREATE TABLE IF NOT EXISTS authenticators (id INT PRIMARY KEY AUTO_INCREMENT, "
 				+ "authenticator TINYTEXT)";
 		stmt = conn.createStatement();
 		stmt.execute(query);
 		
-		query = "CREATE TABLE IF NOT EXISTS manager_masterKey (id INT PRIMARY KEY AUTO_INCREMENT, "
+		query = "CREATE TABLE IF NOT EXISTS masterKey (id INT PRIMARY KEY AUTO_INCREMENT, "
 				+ "secretKey TINYTEXT)";
 		stmt = conn.createStatement();
 		stmt.execute(query);

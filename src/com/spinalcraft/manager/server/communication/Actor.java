@@ -18,7 +18,7 @@ public class Actor {
 	public int lastTransmit;
 
 	public static Actor getFromUnclaimedAccessKey(String key) throws SQLException{
-		String query = "SELECT * FROM manager_accessKeys k JOIN manager_actors a ON k.actor_id = a.id "
+		String query = "SELECT * FROM accessKeys k JOIN actors a ON k.actor_id = a.id "
 				+ "WHERE BINARY k.accessKey = ?";
 		
 		PreparedStatement stmt = Database.getInstance().prepareStatement(query);
@@ -38,7 +38,7 @@ public class Actor {
 	}
 	
 	public static Actor getFromPublicKey(String publicKey) throws SQLException{
-		String query = "SELECT * FROM manager_actors WHERE publicKey = ?";
+		String query = "SELECT * FROM actors WHERE publicKey = ?";
 		PreparedStatement stmt = Database.getInstance().prepareStatement(query);
 		stmt.setString(1, publicKey);
 		ResultSet rs = stmt.executeQuery();
@@ -76,7 +76,7 @@ public class Actor {
 	}
 	
 	public void updateWithApproval() throws SQLException{
-		String query = "UPDATE manager_actors "
+		String query = "UPDATE actors "
 				+ "SET publicKey = ?,"
 				+ "secretKey = ?"
 				+ "WHERE id = ?";
@@ -90,7 +90,7 @@ public class Actor {
 	}
 	
 	private void updateWithClaimedAccessKey() throws SQLException{
-		String query = "UPDATE manager_accessKeys "
+		String query = "UPDATE accessKeys "
 				+ "SET claimed = 1 "
 				+ "WHERE actor_id = ? ";
 		PreparedStatement stmt = Database.getInstance().prepareStatement(query);

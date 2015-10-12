@@ -56,7 +56,7 @@
 								<excludes>
 								</excludes>
 							</artifactSet>
-							<outputFile>C:\Users\Parker\Dev\jars\SpinalcraftManager-Server\SpinalcraftManager-Server.jar</outputFile>
+							<outputFile>C:\Users\Parker\Dev\jars\SpinalcraftNetwork\SpinalcraftManager-Server\SpinalcraftManager-Server.jar</outputFile>
 						</configuration>
 					</execution>
 				</executions>

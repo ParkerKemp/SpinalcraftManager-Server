@@ -4,7 +4,7 @@ import com.spinalcraft.easycrypt.messenger.Messenger;
 import com.spinalcraft.manager.server.communication.Listener;
 
 public class Main {
-	public final static String dbName = "Development";
+	public final static String dbName = "Manager";
 	private final static boolean shouldShowDebug = true;
 
 	public static void main(String[] args){

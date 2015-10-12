@@ -13,7 +13,8 @@ public class Listener implements Runnable {
 		ServerSocket socket = null;
 		Socket conn = null;
 		
-		ManagerService service = new ManagerService("manager", "1234", Crypt.getInstance());
+		ManagerService service = new ManagerService();
+		service.init("manager", "1234", Crypt.getInstance());
 		try {
 			socket = new ServerSocket(9494);
 			while(true){
