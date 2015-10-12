@@ -16,7 +16,7 @@ public class Listener implements Runnable {
 		ManagerService service = new ManagerService();
 		service.init("manager", "1234", Crypt.getInstance());
 		try {
-			socket = new ServerSocket(9494);
+			socket = new ServerSocket(9495);
 			while(true){
 				conn = socket.accept();
 				new Thread(new ClientHandler(conn, service)).start();
