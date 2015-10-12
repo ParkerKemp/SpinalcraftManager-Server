@@ -84,15 +84,6 @@ public class Database {
 		Statement stmt = conn.createStatement();
 		stmt.execute(query);
 		
-		query = "CREATE TABLE IF NOT EXISTS manager_accessKeys ("
-				+ "actor_id INT PRIMARY KEY, "
-				+ "accessKey VARCHAR(32) NOT NULL UNIQUE, "
-				+ "claimed TINYINT NOT NULL DEFAULT 0, "
-				+ "FOREIGN KEY (actor_id) REFERENCES manager_actors(id))";
-		
-		stmt = conn.createStatement();
-		stmt.execute(query);
-		
 		query = "CREATE TABLE IF NOT EXISTS manager_authenticators (id INT PRIMARY KEY AUTO_INCREMENT, "
 				+ "authenticator TINYTEXT)";
 		stmt = conn.createStatement();
