@@ -36,7 +36,8 @@ public class ManagerService extends BerberosService{
 		try {
 			PreparedStatement stmt = Database.getInstance().prepareStatement(query);
 			stmt.setString(1, authenticator);
-			return stmt.execute();
+			stmt.execute();
+			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
@@ -79,5 +80,4 @@ public class ManagerService extends BerberosService{
 	public MessageReceiver getReceiver(Socket socket, EasyCrypt crypt) {
 		return new Receiver(socket, crypt);
 	}
-
 }
