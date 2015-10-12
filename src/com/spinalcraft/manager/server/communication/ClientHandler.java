@@ -4,23 +4,31 @@ import java.io.IOException;
 import java.net.Socket;
 import java.sql.SQLException;
 
+import com.spinalcraft.berberos.service.ServiceAmbassador;
 import com.spinalcraft.easycrypt.messenger.MessageReceiver;
 import com.spinalcraft.easycrypt.messenger.MessageSender;
-import com.spinalcraft.manager.server.communication.messenger.Receiver;
+import com.spinalcraft.manager.server.ManagerService;
 import com.spinalcraft.manager.server.communication.messenger.Sender;
 
 public class ClientHandler implements Runnable{
 	private Socket conn;
+	private ManagerService service;
 	
-	public ClientHandler(Socket conn){
+	public ClientHandler(Socket conn, ManagerService service){
 		this.conn = conn;
+		this.service = service;
 	}
 	
 	@Override
 	public void run(){
-		MessageReceiver receiver = new Receiver(conn, Crypt.getInstance());
-		if(receiver.receiveMessage())
-			processRequest(receiver);
+		ServiceAmbassador ambassador = service.getAmbassador(conn);
+		if(ambassador == null)
+			return;
+		
+		MessageReceiver receiver = ambassador.receiveMessage();
+		if(receiver == null)
+			return;
+		processRequest(receiver);
 	}
 	
 	private void processRequest(MessageReceiver receiver){
