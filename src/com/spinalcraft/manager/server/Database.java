@@ -92,6 +92,16 @@ public class Database {
 		
 		stmt = conn.createStatement();
 		stmt.execute(query);
+		
+		query = "CREATE TABLE IF NOT EXISTS manager_authenticators (id INT PRIMARY KEY AUTO_INCREMENT, "
+				+ "authenticator TINYTEXT)";
+		stmt = conn.createStatement();
+		stmt.execute(query);
+		
+		query = "CREATE TABLE IF NOT EXISTS manager_masterKey (id INT PRIMARY KEY AUTO_INCREMENT, "
+				+ "secretKey TINYTEXT)";
+		stmt = conn.createStatement();
+		stmt.execute(query);
 	}
 }
 

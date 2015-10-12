@@ -9,8 +9,6 @@ public class Main {
 
 	public static void main(String[] args){
 		Messenger.shouldShowDebug = shouldShowDebug;
-		Messenger.setAuthExpiration(30);
-		Messenger.setShouldInitiateHandshakes(false);
 		Database.getInstance().init(dbName);
 		(new Thread(new Listener())).start();
 		System.out.println("Waiting...");

@@ -10,7 +10,6 @@ public class Listener implements Runnable {
 	public void run(){
 		ServerSocket socket = null;
 		Socket conn = null;
-//		Database db = new Database("Development");
 		try {
 			socket = new ServerSocket(9494);
 			while(true){
