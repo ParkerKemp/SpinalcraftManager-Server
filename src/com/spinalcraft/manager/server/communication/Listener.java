@@ -14,7 +14,10 @@ public class Listener implements Runnable {
 		Socket conn = null;
 		
 		ManagerService service = new ManagerService();
-		service.init("manager", "1234", Crypt.getInstance());
+		if(!service.init("manager", "1234", Crypt.getInstance())){
+			System.err.println("Failed to register with authentication server! Exiting...");
+			return;
+		}
 		try {
 			socket = new ServerSocket(9495);
 			while(true){
