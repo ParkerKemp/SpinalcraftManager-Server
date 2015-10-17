@@ -1,3 +1,4 @@
-mvn deploy
+git pull
+mvn package
 mkdir /opt/Manager 2>/dev/null
 cp target/SpinalcraftManager-Server.jar /opt/Manager
