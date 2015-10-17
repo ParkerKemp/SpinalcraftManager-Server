@@ -98,6 +98,15 @@ public class Database {
 				+ "secretKey TINYTEXT)";
 		stmt = conn.createStatement();
 		stmt.execute(query);
+		
+		query = "CREATE TABLE IF NOT EXISTS applications (username VARCHAR(32) PRIMARY KEY, "
+				+ "country VARCHAR(64), "
+				+ "year INT, "
+				+ "heard VARCHAR(32), "
+				+ "email VARCHAR(64), "
+				+ "timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)";
+		stmt = conn.createStatement();
+		stmt.execute(query);
 	}
 }
 
