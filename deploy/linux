@@ -1,0 +1,3 @@
+mvn deploy
+mkdir /opt/Manager 2>/dev/null
+cp target/SpinalcraftManager-Server.jar /opt/Manager
