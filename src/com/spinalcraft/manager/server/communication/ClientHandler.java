@@ -40,7 +40,7 @@ public class ClientHandler implements Runnable{
 		MessageSender sender = ambassador.getSender();
 		switch(intent){
 		case "applicationList":
-			
+			sendApplicationList(receiver, ambassador);
 			break;
 		case "message":			
 			String message = receiver.getItem("message");
