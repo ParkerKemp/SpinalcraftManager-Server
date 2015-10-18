@@ -104,6 +104,8 @@ public class Database {
 				+ "year INT, "
 				+ "heard VARCHAR(32), "
 				+ "email VARCHAR(64), "
+				+ "comment MEDIUMTEXT, "
+				+ "status INT DEFAULT 0, "
 				+ "timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)";
 		stmt = conn.createStatement();
 		stmt.execute(query);
