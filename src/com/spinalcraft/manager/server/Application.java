@@ -9,4 +9,5 @@ public class Application {
 	public String heard;
 	public String email;
 	public Timestamp timestamp;
+	public String comment;
 }

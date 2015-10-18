@@ -38,6 +38,7 @@ public class ApplicationManager {
 				application.heard = rs.getString("heard");
 				application.email = rs.getString("email");
 				application.timestamp = rs.getTimestamp("timestamp");
+				application.comment = rs.getString("comment");
 				applications.add(application);
 			}
 		} catch (SQLException e) {
