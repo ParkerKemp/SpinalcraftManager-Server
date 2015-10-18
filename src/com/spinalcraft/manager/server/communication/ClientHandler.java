@@ -2,9 +2,11 @@ package com.spinalcraft.manager.server.communication;
 
 import java.net.Socket;
 
+import com.google.gson.Gson;
 import com.spinalcraft.berberos.service.ServiceAmbassador;
 import com.spinalcraft.easycrypt.messenger.MessageReceiver;
 import com.spinalcraft.easycrypt.messenger.MessageSender;
+import com.spinalcraft.manager.server.ApplicationManager;
 import com.spinalcraft.manager.server.ManagerService;
 
 public class ClientHandler implements Runnable{
@@ -35,14 +37,20 @@ public class ClientHandler implements Runnable{
 		if(receiver == null)
 			return;
 		String intent = receiver.getHeader("intent");
+		MessageSender sender = ambassador.getSender();
 		switch(intent){
-		case "access":
-			(new AccessRequest(receiver, conn)).process();
+		case "applicationList":
+			Gson gson = new Gson();
+			String json = gson.toJson(ApplicationManager.getApplications());
+			sender = ambassador.getSender();
+			sender.addHeader("status", "good");
+			sender.addItem("applications", json);
+			ambassador.sendMessage(sender);
 			break;
 		case "message":			
 			String message = receiver.getItem("message");
 			System.out.println("Received Message: " + message);
-			MessageSender sender = ambassador.getSender();
+			sender = ambassador.getSender();
 			sender.addItem("message", message + " to you as well");
 			ambassador.sendMessage(sender);
 			break;
