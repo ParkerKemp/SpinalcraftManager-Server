@@ -6,12 +6,29 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ApplicationManager {
-	public static ArrayList<Application> getApplications(){
+	public static ArrayList<Application> getApplications(String filter){
 		ArrayList<Application> applications = new ArrayList<Application>();
+
+		String query = "SELECT * FROM applications ";
+		String where = "";
+		switch(filter){
+		case "all":
+			break;
+		case "pending":
+			where = "WHERE status = 0";
+			break;
+		case "accepted":
+			where = "WHERE status = 1";
+			break;
+		case "declined":
+			where = "WHERE status = 2";
+			break;
+		default:
+			return applications;
+		}
 		
-		String query = "SELECT * FROM applications";
 		try {
-			PreparedStatement stmt = Database.getInstance().prepareStatement(query);
+			PreparedStatement stmt = Database.getInstance().prepareStatement(query + where);
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()){
 				Application application = new Application();

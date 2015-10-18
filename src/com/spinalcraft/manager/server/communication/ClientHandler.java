@@ -40,13 +40,7 @@ public class ClientHandler implements Runnable{
 		MessageSender sender = ambassador.getSender();
 		switch(intent){
 		case "applicationList":
-			Gson gson = new Gson();
-			String json = gson.toJson(ApplicationManager.getApplications());
-			System.out.println(json);
-			sender = ambassador.getSender();
-			sender.addHeader("status", "good");
-			sender.addItem("applications", json);
-			ambassador.sendMessage(sender);
+			
 			break;
 		case "message":			
 			String message = receiver.getItem("message");
@@ -56,6 +50,18 @@ public class ClientHandler implements Runnable{
 			ambassador.sendMessage(sender);
 			break;
 		}
+	}
+	
+	private void sendApplicationList(MessageReceiver receiver, ServiceAmbassador ambassador){
+		String filter = receiver.getItem("filter");
+		MessageSender sender = ambassador.getSender();
+		Gson gson = new Gson();
+		String json = gson.toJson(ApplicationManager.getApplications(filter));
+		System.out.println(json);
+		sender = ambassador.getSender();
+		sender.addHeader("status", "good");
+		sender.addItem("applications", json);
+		ambassador.sendMessage(sender);
 	}
 }
 
