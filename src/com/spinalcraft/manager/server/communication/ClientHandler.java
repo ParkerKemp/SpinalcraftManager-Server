@@ -42,6 +42,7 @@ public class ClientHandler implements Runnable{
 		case "applicationList":
 			Gson gson = new Gson();
 			String json = gson.toJson(ApplicationManager.getApplications());
+			System.out.println(json);
 			sender = ambassador.getSender();
 			sender.addHeader("status", "good");
 			sender.addItem("applications", json);
