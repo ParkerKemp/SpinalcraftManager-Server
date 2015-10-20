@@ -80,6 +80,12 @@
 		</dependency>
 		<dependency>
 			<groupId>com.spinalcraft</groupId>
+			<artifactId>UsernameHistory</artifactId>
+			<version>LATEST</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.spinalcraft</groupId>
 			<artifactId>berbtools</artifactId>
 			<version>LATEST</version>
 			<scope>compile</scope>
