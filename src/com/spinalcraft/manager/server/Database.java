@@ -101,7 +101,7 @@ public class Database {
 		
 		query = "CREATE TABLE IF NOT EXISTS applications ("
 				+ "uuid VARCHAR(32) PRIMARY KEY, "
-				+ "username VARCHAR(32) "
+				+ "username VARCHAR(32), "
 				+ "country VARCHAR(64), "
 				+ "year INT, "
 				+ "heard VARCHAR(32), "
