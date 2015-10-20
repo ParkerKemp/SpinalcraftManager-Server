@@ -18,7 +18,9 @@ public class RefreshUsernames implements Runnable{
 		try {
 			PreparedStatement stmt = Database.getInstance().prepareStatement(query);
 			ResultSet rs = stmt.executeQuery();
+			System.out.println(query);
 			while(rs.next()){
+				System.out.println("Checking");
 				checkAndUpdate(rs.getString("uuid"), rs.getString("username"));
 			}
 		} catch (SQLException e) {
