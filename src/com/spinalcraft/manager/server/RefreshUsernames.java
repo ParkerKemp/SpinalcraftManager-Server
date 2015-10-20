@@ -18,9 +18,7 @@ public class RefreshUsernames implements Runnable{
 		try {
 			PreparedStatement stmt = Database.getInstance().prepareStatement(query);
 			ResultSet rs = stmt.executeQuery();
-			System.out.println(query);
 			while(rs.next()){
-				System.out.println("Checking");
 				checkAndUpdate(rs.getString("uuid"), rs.getString("username"));
 			}
 		} catch (SQLException e) {
@@ -33,8 +31,6 @@ public class RefreshUsernames implements Runnable{
 		UHistory history = UsernameHistory.getHistoryFromUuid(uuid);
 		UName[] names = history.getOldUsernames();
 		String currentUsername = names[names.length - 1].getName();
-		System.out.println("Known username: " + knownUsername);
-		System.out.println("Current username: " + currentUsername);
 		if(currentUsername != knownUsername){
 			updateUsername(uuidString, currentUsername);
 		}
