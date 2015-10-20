@@ -7,6 +7,9 @@ public class Application {
 	public int year;
 	public String heard;
 	public String email;
-	public int timestamp;
 	public String comment;
+	public int status;
+	public String staffActor;
+	public int actionTimestamp;
+	public int timestamp;
 }
