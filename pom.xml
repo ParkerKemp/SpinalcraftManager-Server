@@ -85,6 +85,12 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.bukkit</groupId>
+			<artifactId>bukkit</artifactId>
+			<version>1.8-R0.1-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
 			<groupId>com.spinalcraft</groupId>
 			<artifactId>berbtools</artifactId>
 			<version>LATEST</version>
