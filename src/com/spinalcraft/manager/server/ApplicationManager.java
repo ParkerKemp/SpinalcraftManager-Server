@@ -9,7 +9,7 @@ public class ApplicationManager {
 	public static ArrayList<Application> getApplications(String filter){
 		ArrayList<Application> applications = new ArrayList<Application>();
 
-		String query = "SELECT username, country, year, heard, email, comment, UNIX_TIMESTAMP(timestamp) as ts FROM applications ";
+		String query = "SELECT uuid, username, country, year, heard, email, comment, UNIX_TIMESTAMP(timestamp) as ts FROM applications ";
 		String where = "";
 		switch(filter){
 		case "all":
@@ -32,6 +32,7 @@ public class ApplicationManager {
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()){
 				Application application = new Application();
+				application.uuid = rs.getString("uuid");
 				application.username = rs.getString("username");
 				application.country = rs.getString("country");
 				application.year = rs.getInt("year");

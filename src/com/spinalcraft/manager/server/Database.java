@@ -99,7 +99,9 @@ public class Database {
 		stmt = conn.createStatement();
 		stmt.execute(query);
 		
-		query = "CREATE TABLE IF NOT EXISTS applications (username VARCHAR(32) PRIMARY KEY, "
+		query = "CREATE TABLE IF NOT EXISTS applications ("
+				+ "uuid VARCHAR(32) PRIMARY KEY, "
+				+ "username VARCHAR(32) "
 				+ "country VARCHAR(64), "
 				+ "year INT, "
 				+ "heard VARCHAR(32), "
