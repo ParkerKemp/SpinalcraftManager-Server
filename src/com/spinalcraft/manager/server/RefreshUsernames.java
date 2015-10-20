@@ -31,6 +31,8 @@ public class RefreshUsernames implements Runnable{
 		UHistory history = UsernameHistory.getHistoryFromUuid(uuid);
 		UName[] names = history.getOldUsernames();
 		String currentUsername = names[names.length - 1].getName();
+		System.out.println("Known username: " + knownUsername);
+		System.out.println("Current username: " + currentUsername);
 		if(currentUsername != knownUsername){
 			updateUsername(uuidString, currentUsername);
 		}
