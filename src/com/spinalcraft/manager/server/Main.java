@@ -10,6 +10,7 @@ public class Main {
 	public static void main(String[] args){
 		Messenger.shouldShowDebug = shouldShowDebug;
 		Database.getInstance().init(dbName);
+		System.out.println("TEST");
 		(new Thread(new RefreshUsernames())).start();
 		(new Thread(new Listener())).start();
 		System.out.println("Waiting...");
