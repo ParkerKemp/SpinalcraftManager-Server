@@ -99,13 +99,13 @@ public class ApplicationManager {
 	}
 	
 	private static void lockTable() throws SQLException{
-		String query = "LOCK TABLES applications READ, WRITE";
+		String query = "LOCK TABLES applications WRITE";
 		PreparedStatement stmt = Database.getInstance().prepareStatement(query);
 		stmt.execute();
 	}
 	
 	private static void unlockTable(){
-		String query = "LOCK TABLES applications READ, WRITE";
+		String query = "UNLOCK TABLES";
 		PreparedStatement stmt;
 		try {
 			stmt = Database.getInstance().prepareStatement(query);
