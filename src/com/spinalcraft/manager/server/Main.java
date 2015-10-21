@@ -2,6 +2,7 @@ package com.spinalcraft.manager.server;
 
 import com.spinalcraft.easycrypt.messenger.Messenger;
 import com.spinalcraft.manager.server.communication.Listener;
+import com.spinalcraft.manager.server.component.RefreshUsernames;
 
 public class Main {
 	public final static String dbName = "Manager";

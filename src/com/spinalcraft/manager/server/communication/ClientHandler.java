@@ -6,8 +6,8 @@ import com.google.gson.Gson;
 import com.spinalcraft.berberos.service.ServiceAmbassador;
 import com.spinalcraft.easycrypt.messenger.MessageReceiver;
 import com.spinalcraft.easycrypt.messenger.MessageSender;
-import com.spinalcraft.manager.server.ApplicationManager;
 import com.spinalcraft.manager.server.ManagerService;
+import com.spinalcraft.manager.server.component.ApplicationManager;
 
 public class ClientHandler implements Runnable{
 	private Socket conn;
@@ -26,9 +26,6 @@ public class ClientHandler implements Runnable{
 			return;
 		}
 		
-//		MessageReceiver receiver = ambassador.receiveMessage();
-//		if(receiver == null)
-//			return;
 		processRequest(ambassador);
 	}
 	
@@ -42,7 +39,10 @@ public class ClientHandler implements Runnable{
 		case "applicationList":
 			sendApplicationList(receiver, ambassador);
 			break;
-		case "message":			
+		case "applicationAnswer":
+			processApplicationAnswerRequest(receiver, ambassador);
+			break;
+		case "message":		
 			String message = receiver.getItem("message");
 			System.out.println("Received Message: " + message);
 			sender = ambassador.getSender();
@@ -62,6 +62,13 @@ public class ClientHandler implements Runnable{
 		sender.addHeader("status", "good");
 		sender.addItem("applications", json);
 		ambassador.sendMessage(sender);
+	}
+	
+	private void processApplicationAnswerRequest(MessageReceiver receiver, ServiceAmbassador ambassador){
+		String identity = receiver.getHeader("identity");
+		String uuid = receiver.getHeader("uuid");
+		boolean accept = Boolean.parseBoolean(receiver.getHeader("accept"));
+		ApplicationManager.completeApplication(uuid, accept, identity);
 	}
 }
 

@@ -1,10 +1,11 @@
-package com.spinalcraft.manager.server;
+package com.spinalcraft.manager.server.component;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
+import com.spinalcraft.manager.server.Database;
 import com.spinalcraft.usernamehistory.UHistory;
 import com.spinalcraft.usernamehistory.UName;
 import com.spinalcraft.usernamehistory.UUIDFetcher;
