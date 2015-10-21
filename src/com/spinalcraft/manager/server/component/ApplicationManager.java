@@ -57,7 +57,7 @@ public class ApplicationManager {
 	}
 
 	public static Application getApplication(String uuid) throws SQLException{
-		String query = "SELECT * FROM applications WHERE uuid = ?";
+		String query = "SELECT uuid, username, country, year, heard, email, comment, status, staffActor, UNIX_TIMESTAMP(actionTimestamp) as ats, UNIX_TIMESTAMP(timestamp) as ts FROM applications ";
 		PreparedStatement stmt = Database.getInstance().prepareStatement(query);
 		stmt.setString(1, uuid);
 		ResultSet rs = stmt.executeQuery();
