@@ -68,7 +68,7 @@ public class ClientHandler implements Runnable{
 	private void processApplicationAnswerRequest(MessageReceiver receiver, ServiceAmbassador ambassador){
 		String identity = receiver.getHeader("identity");
 		String uuid = receiver.getItem("uuid");
-		boolean accept = Boolean.parseBoolean(receiver.getHeader("accept"));
+		boolean accept = Boolean.parseBoolean(receiver.getItem("accept"));
 		MessageSender sender = ambassador.getSender();
 		Application application = ApplicationManager.completeApplication(uuid, accept, identity);
 		if(application != null){
