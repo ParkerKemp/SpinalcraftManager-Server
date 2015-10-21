@@ -86,7 +86,7 @@ public class ApplicationManager {
 			lockTable();
 			if(!applicationNotComplete(uuid)){
 				unlockTable();
-				return null;
+				return getApplication(uuid);
 			}
 			
 			updateApplication(uuid, accept, staffIdentity);
