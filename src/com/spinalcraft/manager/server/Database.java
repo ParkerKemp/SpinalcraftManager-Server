@@ -109,7 +109,7 @@ public class Database {
 				+ "comment MEDIUMTEXT, "
 				+ "status INT DEFAULT 0, "
 				+ "staffActor VARCHAR(32), "
-				+ "actionTimestamp TIMESTAMP DEFAULT NULL, "
+				+ "actionTimestamp TIMESTAMP NULL, "
 				+ "timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)";
 		stmt = conn.createStatement();
 		stmt.execute(query);

@@ -56,22 +56,46 @@ public class ApplicationManager {
 		return applications;
 	}
 
-	public static boolean completeApplication(String uuid, boolean accept, String staffIdentity){
+	public static Application getApplication(String uuid) throws SQLException{
+		String query = "SELECT * FROM applications WHERE uuid = ?";
+		PreparedStatement stmt = Database.getInstance().prepareStatement(query);
+		stmt.setString(1, uuid);
+		ResultSet rs = stmt.executeQuery();
+		if(!rs.first())
+			return null;
+		
+		Application application = new Application();
+		application.uuid = rs.getString("uuid");
+		application.username = rs.getString("username");
+		application.country = rs.getString("country");
+		application.year = rs.getInt("year");
+		application.heard = rs.getString("heard");
+		application.email = rs.getString("email");
+		application.status = rs.getInt("status");
+		application.staffActor = rs.getString("staffActor");
+		application.actionTimestamp = rs.getInt("ats");
+		application.timestamp = rs.getInt("ts");
+		application.comment = rs.getString("comment");
+		
+		return application;
+	}
+	
+	public static Application completeApplication(String uuid, boolean accept, String staffIdentity){
 
 		try {
 			lockTable();
 			if(!applicationNotComplete(uuid))
-				return false;
+				return null;
 			
 			updateApplication(uuid, accept, staffIdentity);
 			
 			unlockTable();
-			return true;
+			return getApplication(uuid);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		unlockTable();
-		return false;
+		return null;
 	}
 	
 	private static void lockTable() throws SQLException{

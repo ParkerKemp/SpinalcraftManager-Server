@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.spinalcraft.berberos.service.ServiceAmbassador;
 import com.spinalcraft.easycrypt.messenger.MessageReceiver;
 import com.spinalcraft.easycrypt.messenger.MessageSender;
+import com.spinalcraft.manager.server.Application;
 import com.spinalcraft.manager.server.ManagerService;
 import com.spinalcraft.manager.server.component.ApplicationManager;
 
@@ -68,7 +69,18 @@ public class ClientHandler implements Runnable{
 		String identity = receiver.getHeader("identity");
 		String uuid = receiver.getHeader("uuid");
 		boolean accept = Boolean.parseBoolean(receiver.getHeader("accept"));
-		ApplicationManager.completeApplication(uuid, accept, identity);
+		MessageSender sender = ambassador.getSender();
+		Application application = ApplicationManager.completeApplication(uuid, accept, identity);
+		if(application != null){
+			sender.addHeader("status", "good");
+			Gson gson = new Gson();
+			sender.addItem("application", gson.toJson(application));
+			ambassador.sendMessage(sender);
+		}
+		else{
+			sender.addHeader("status", "bad");
+			ambassador.sendMessage(sender);
+		}
 	}
 }
 
