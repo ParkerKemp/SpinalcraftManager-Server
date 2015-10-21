@@ -130,8 +130,10 @@ public class ApplicationManager {
 		stmt.setString(1, uuid);
 		
 		ResultSet rs = stmt.executeQuery();
-		if(!rs.first())
+		if(!rs.first()){
+			System.out.println("Invalid uuid: " + uuid);
 			return false;
+		}
 		
 		int status = rs.getInt("status");
 		if(status != 0)
