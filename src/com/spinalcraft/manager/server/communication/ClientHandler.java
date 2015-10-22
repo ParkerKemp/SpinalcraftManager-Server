@@ -73,7 +73,7 @@ public class ClientHandler implements Runnable{
 		Application application = ApplicationManager.completeApplication(uuid, accept, identity);
 		if(application != null){
 			if(accept)
-				notifyApplicant(application.email);
+				notifyApplicant(application.email, application.username);
 			sender.addHeader("status", "good");
 			Gson gson = new Gson();
 			sender.addItem("application", gson.toJson(application));
@@ -85,10 +85,10 @@ public class ClientHandler implements Runnable{
 		}
 	}
 	
-	private void notifyApplicant(String email){
+	private void notifyApplicant(String email, String username){
 		Runtime rt = Runtime.getRuntime();
 		try {
-			rt.exec("/usr/local/sbin/notifyAcceptedApplication " + email);
+			rt.exec("/usr/local/sbin/notifyAcceptedApplication " + email + " " + username);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
