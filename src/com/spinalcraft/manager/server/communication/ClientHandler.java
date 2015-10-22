@@ -1,5 +1,6 @@
 package com.spinalcraft.manager.server.communication;
 
+import java.io.IOException;
 import java.net.Socket;
 
 import com.google.gson.Gson;
@@ -58,7 +59,6 @@ public class ClientHandler implements Runnable{
 		MessageSender sender = ambassador.getSender();
 		Gson gson = new Gson();
 		String json = gson.toJson(ApplicationManager.getApplications(filter));
-		System.out.println(json);
 		sender = ambassador.getSender();
 		sender.addHeader("status", "good");
 		sender.addItem("applications", json);
@@ -72,6 +72,8 @@ public class ClientHandler implements Runnable{
 		MessageSender sender = ambassador.getSender();
 		Application application = ApplicationManager.completeApplication(uuid, accept, identity);
 		if(application != null){
+			if(accept)
+				notifyApplicant(application.email);
 			sender.addHeader("status", "good");
 			Gson gson = new Gson();
 			sender.addItem("application", gson.toJson(application));
@@ -82,7 +84,16 @@ public class ClientHandler implements Runnable{
 			ambassador.sendMessage(sender);
 		}
 	}
+	
+	private void notifyApplicant(String email){
+		Runtime rt = Runtime.getRuntime();
+		try {
+			rt.exec("/usr/local/sbin/notifyAcceptedApplication " + email);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
 }
-
 
 
