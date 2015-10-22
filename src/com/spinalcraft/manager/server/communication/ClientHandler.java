@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 
-import org.newsclub.net.unix.AFUNIXServerSocket;
 import org.newsclub.net.unix.AFUNIXSocket;
 import org.newsclub.net.unix.AFUNIXSocketAddress;
 
@@ -101,7 +100,7 @@ public class ClientHandler implements Runnable{
 	}
 	
 	private boolean whitelistAdd(String username){
-		File socketFile = new File("/home/minecraft/server/spinal/plugins/Spinalpack/sockets/command.sock");
+		File socketFile = new File("/home/minecraft/server/dev/plugins/Spinalpack/sockets/command.sock");
 		try {
 			AFUNIXSocket socket = AFUNIXSocket.newInstance();
 			socket.connect(new AFUNIXSocketAddress(socketFile));
