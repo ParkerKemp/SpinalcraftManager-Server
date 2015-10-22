@@ -1,7 +1,13 @@
 package com.spinalcraft.manager.server.communication;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.Socket;
+
+import org.newsclub.net.unix.AFUNIXServerSocket;
+import org.newsclub.net.unix.AFUNIXSocket;
+import org.newsclub.net.unix.AFUNIXSocketAddress;
 
 import com.google.gson.Gson;
 import com.spinalcraft.berberos.service.ServiceAmbassador;
@@ -72,7 +78,7 @@ public class ClientHandler implements Runnable{
 		MessageSender sender = ambassador.getSender();
 		Application application = ApplicationManager.completeApplication(uuid, accept, identity);
 		if(application != null){
-			if(accept)
+			if(accept && whitelistAdd(application.username))
 				notifyApplicant(application.email, application.username);
 			sender.addHeader("status", "good");
 			Gson gson = new Gson();
@@ -92,7 +98,20 @@ public class ClientHandler implements Runnable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+	}
+	
+	private boolean whitelistAdd(String username){
+		File socketFile = new File("/home/minecraft/server/spinal/plugins/Spinalpack/sockets/command.sock");
+		try {
+			AFUNIXSocket socket = AFUNIXSocket.newInstance();
+			socket.connect(new AFUNIXSocketAddress(socketFile));
+			PrintStream printer = new PrintStream(socket.getOutputStream());
+			printer.print("whitelist add " + username);
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 }
 
