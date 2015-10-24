@@ -106,6 +106,7 @@ public class ClientHandler implements Runnable{
 			socket.connect(new AFUNIXSocketAddress(socketFile));
 			PrintStream printer = new PrintStream(socket.getOutputStream());
 			printer.print("whitelist add " + username);
+			socket.close();
 			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
