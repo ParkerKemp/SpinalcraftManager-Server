@@ -48,8 +48,8 @@ public class Notifier implements Runnable{
 		connection.setRequestProperty("Content-Type", "application/json");
 		connection.setRequestProperty("Authorization:", "key=AIzaSyDWU3jB2LidRRoD4mj-BVfcD_r7DDHg93k");
 //		connection.setUseCaches(false);
-//		connection.setDoInput(true);
-//		connection.setDoOutput(true);
+		connection.setDoInput(true);
+		connection.setDoOutput(true);
 		return connection;
 	}
 }
