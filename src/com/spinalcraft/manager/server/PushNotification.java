@@ -15,6 +15,7 @@ public class PushNotification {
 	
 	public PushNotification(){
 		obj = new JsonObject();
+		data = new JsonObject();
 		obj.addProperty("to", "/topics/applications");
 		obj.add("data", data);
 	}
