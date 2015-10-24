@@ -1,6 +1,8 @@
 package com.spinalcraft.manager.server;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -21,6 +23,10 @@ public class Notifier implements Runnable{
 				obj.addProperty("to", "/topics/applications");
 				obj.add("data", data);
 				writeBody(connection, obj.toString());
+				
+				BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+				String response = reader.readLine();
+				System.out.println("Response: " + response);
 				
 			} catch (InterruptedException | IOException e) {
 				e.printStackTrace();
