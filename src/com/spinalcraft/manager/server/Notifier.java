@@ -46,7 +46,7 @@ public class Notifier implements Runnable{
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setRequestMethod("POST");
 		connection.setRequestProperty("Content-Type", "application/json");
-		connection.setRequestProperty("Authorization:", "key=AIzaSyDWU3jB2LidRRoD4mj-BVfcD_r7DDHg93k");
+		connection.setRequestProperty("Authorization", "key=AIzaSyDWU3jB2LidRRoD4mj-BVfcD_r7DDHg93k");
 //		connection.setUseCaches(false);
 		connection.setDoInput(true);
 		connection.setDoOutput(true);
