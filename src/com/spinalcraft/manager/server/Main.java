@@ -13,6 +13,7 @@ public class Main {
 		Database.getInstance().init(dbName);
 		(new Thread(new RefreshUsernames())).start();
 		(new Thread(new Listener())).start();
+		(new Thread(new Notifier())).start();
 	}
 	
 	public static void debug(String string){
