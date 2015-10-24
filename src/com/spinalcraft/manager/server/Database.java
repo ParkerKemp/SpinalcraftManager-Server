@@ -113,6 +113,13 @@ public class Database {
 				+ "timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)";
 		stmt = conn.createStatement();
 		stmt.execute(query);
+		
+		query = "CREATE TABLE IF NOT EXISTS pendingNotification ("
+				+ "uuid VARCHAR(32) PRIMARY KEY, "
+				+ "seen TINYINT DEFAULT 0, "
+				+ "FOREIGN KEY (uuid) REFERENCES applications(uuid))";
+		stmt = conn.createStatement();
+		stmt.execute(query);
 	}
 }
 
