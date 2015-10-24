@@ -32,11 +32,11 @@ public class Notifier implements Runnable{
 	private ArrayList<Application> getNewApplications() throws SQLException{
 		String query;
 		PreparedStatement stmt;
-//		query = "DELETE FROM pendingNotifications WHERE seen = 1";
+//		query = "DELETE FROM pendingNotification WHERE seen = 1";
 //		stmt = Database.getInstance().prepareStatement(query);
 //		stmt.execute();
 		
-		query = "UPDATE pendingNotifications SET seen = 1";
+		query = "UPDATE pendingNotification SET seen = 1";
 		stmt = Database.getInstance().prepareStatement(query);
 		stmt.execute();
 		
