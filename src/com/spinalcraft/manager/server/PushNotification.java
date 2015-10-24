@@ -10,15 +10,26 @@ import java.net.URL;
 import com.google.gson.JsonObject;
 
 public class PushNotification {
-	public String message;
+	private JsonObject obj;
+	private JsonObject data;
+	
+	public PushNotification(){
+		obj = new JsonObject();
+		obj.addProperty("to", "/topics/applications");
+		obj.add("data", data);
+	}
+	
+	public void addProperty(String key, String value){
+		data.addProperty(key, value);
+	}
 	
 	public void send() throws IOException{
 		HttpURLConnection connection = createConnection();
-		JsonObject data = new JsonObject();
-		data.addProperty("message", message);
-		JsonObject obj = new JsonObject();
-		obj.addProperty("to", "/topics/applications");
-		obj.add("data", data);
+//		JsonObject data = new JsonObject();
+//		data.addProperty("message", message);
+//		JsonObject obj = new JsonObject();
+//		obj.addProperty("to", "/topics/applications");
+//		obj.add("data", data);
 		writeBody(connection, obj.toString());
 		
 		BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));

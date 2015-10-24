@@ -20,7 +20,7 @@ public class Notifier implements Runnable{
 				for(Application application : applications){
 					PushNotification notification = new PushNotification();
 					Gson gson = new Gson();
-					notification.message = gson.toJson(application);
+					notification.addProperty("application", gson.toJson(application));
 					notification.send();
 				}
 			} catch (InterruptedException | IOException | SQLException e) {
