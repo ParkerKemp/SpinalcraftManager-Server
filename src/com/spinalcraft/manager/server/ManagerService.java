@@ -14,6 +14,10 @@ import com.spinalcraft.manager.server.communication.messenger.Sender;
 
 public class ManagerService extends BerberosService{
 
+	public ManagerService(EasyCrypt crypt) {
+		super(crypt);
+	}
+
 	@Override
 	protected boolean authenticatorCached(String authenticator) {
 		String query = "SELECT * FROM authenticators WHERE authenticator = ?";

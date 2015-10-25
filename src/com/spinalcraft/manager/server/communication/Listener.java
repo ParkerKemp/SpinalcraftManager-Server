@@ -13,8 +13,11 @@ public class Listener implements Runnable {
 		ServerSocket socket = null;
 		Socket conn = null;
 		
-		ManagerService service = new ManagerService();
-		if(!service.init("manager", "1234", Crypt.getInstance())){
+		ManagerService service = (ManagerService)new ManagerService(Crypt.getInstance())
+				.setIdentity("manager")
+				.setServiceAddress("mc.spinalcraft.com")
+				.setPort(9495);
+		if(!service.init("auth.spinalcraft.com", 9494, "1234")){
 			System.err.println("Failed to register with authentication server! Exiting...");
 			return;
 		}
