@@ -15,7 +15,7 @@ import com.spinalcraft.manager.server.communication.messenger.Sender;
 public class ManagerService extends BerberosService{
 
 	public ManagerService(EasyCrypt crypt) {
-		super(crypt);
+		super("auth.spinalcraft.com", 9494, crypt);
 	}
 
 	@Override
@@ -29,7 +29,7 @@ public class ManagerService extends BerberosService{
 			return rs.first();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			//Default to true for security
+			//Default to true for security?
 			return true;
 		}
 	}

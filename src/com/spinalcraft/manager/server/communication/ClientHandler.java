@@ -3,7 +3,6 @@ package com.spinalcraft.manager.server.communication;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.net.Socket;
 
 import org.newsclub.net.unix.AFUNIXSocket;
 import org.newsclub.net.unix.AFUNIXSocketAddress;
@@ -13,30 +12,26 @@ import com.spinalcraft.berberos.service.ServiceAmbassador;
 import com.spinalcraft.easycrypt.messenger.MessageReceiver;
 import com.spinalcraft.easycrypt.messenger.MessageSender;
 import com.spinalcraft.manager.server.Application;
-import com.spinalcraft.manager.server.ManagerService;
 import com.spinalcraft.manager.server.component.ApplicationManager;
 
 public class ClientHandler implements Runnable{
-	private Socket conn;
-	private ManagerService service;
+	private ServiceAmbassador ambassador;
 	
-	public ClientHandler(Socket conn, ManagerService service){
-		this.conn = conn;
-		this.service = service;
+	public ClientHandler(ServiceAmbassador ambassador){
+		this.ambassador = ambassador;
 	}
 	
 	@Override
 	public void run(){
-		ServiceAmbassador ambassador = service.getAmbassador(conn);
 		if(ambassador == null){
 			System.err.println("Failed to authenticate user.");
 			return;
 		}
 		
-		processRequest(ambassador);
+		processRequest();
 	}
 	
-	private void processRequest(ServiceAmbassador ambassador){
+	private void processRequest(){
 		MessageReceiver receiver = ambassador.receiveMessage();
 		if(receiver == null)
 			return;
@@ -44,10 +39,10 @@ public class ClientHandler implements Runnable{
 		MessageSender sender = ambassador.getSender();
 		switch(intent){
 		case "applicationList":
-			sendApplicationList(receiver, ambassador);
+			sendApplicationList(receiver);
 			break;
 		case "applicationAnswer":
-			processApplicationAnswerRequest(receiver, ambassador);
+			processApplicationAnswerRequest(receiver);
 			break;
 		case "message":		
 			String message = receiver.getItem("message");
@@ -59,7 +54,7 @@ public class ClientHandler implements Runnable{
 		}
 	}
 	
-	private void sendApplicationList(MessageReceiver receiver, ServiceAmbassador ambassador){
+	private void sendApplicationList(MessageReceiver receiver){
 		String filter = receiver.getItem("filter");
 		MessageSender sender = ambassador.getSender();
 		Gson gson = new Gson();
@@ -70,7 +65,7 @@ public class ClientHandler implements Runnable{
 		ambassador.sendMessage(sender);
 	}
 	
-	private void processApplicationAnswerRequest(MessageReceiver receiver, ServiceAmbassador ambassador){
+	private void processApplicationAnswerRequest(MessageReceiver receiver){
 		String identity = receiver.getHeader("identity");
 		String uuid = receiver.getItem("uuid");
 		boolean accept = Boolean.parseBoolean(receiver.getItem("accept"));
