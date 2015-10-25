@@ -13,7 +13,7 @@ public class Listener implements Runnable {
 				.setServiceAddress("mc.spinalcraft.com")
 				.setPort(9495);
 		
-		if(!service.init("u5ho6n4vlukd9dsh55shqn42d6")){
+		if(!service.init("373pprp6m0r2aqkd765u1suqdo")){
 			System.err.println("Failed to register with authentication server! Exiting...");
 			return;
 		}
