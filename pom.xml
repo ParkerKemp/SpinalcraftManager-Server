@@ -23,8 +23,6 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<addClasspath>true</addClasspath>
-							<classpathPrefix>lib/</classpathPrefix>
 							<mainClass>com.spinalcraft.manager.server.Main</mainClass>
 						</manifest>
 					</archive>
