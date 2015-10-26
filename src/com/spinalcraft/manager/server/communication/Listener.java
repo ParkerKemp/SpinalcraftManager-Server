@@ -19,7 +19,9 @@ public class Listener implements Runnable {
 		}
 		
 		while(true){
+			System.out.println("Waiting for ambassador");
 			ServiceAmbassador ambassador = service.getAmbassador();
+			System.out.println("Got ambassador");
 			if(ambassador != null)
 				new Thread(new ClientHandler(ambassador)).start();
 		}
